@@ -53,12 +53,20 @@ Node* inputBinaryTree()
 
 }
 
-void levelOrderPrint(Node* root)
+
+
+void leafNodePrint(Node* root)
 {
-    if(root == NULL) return;
+    // int sum = 0;
+    vector<int> arr;
+    if(root->left == NULL && root->right == NULL)
+    {
+        cout << root->val;
+        return;
+    } 
     queue<Node*> q;
     q.push(root);
-    cout << root->val << " ";
+
     while (!q.empty())
     {
         Node* parent = q.front();
@@ -66,76 +74,32 @@ void levelOrderPrint(Node* root)
         if(parent->left)
         {
             q.push(parent->left);
-            cout << parent->left->val << " ";
+            if(parent->left->left == NULL && parent->left->right == NULL) arr.push_back(parent->left->val);
         } 
         if(parent->right)
         {
             q.push(parent->right);
-            cout << parent->right->val << " ";
+            if(parent->right->left == NULL && parent->right->right == NULL) arr.push_back(parent->right->val);
         }
 
     }
-    cout << endl;
-    
-
-}
-
-int nodeCount(Node* root)
-{
-    int cnt = 0;
-    if(root == NULL) return 0;
-    queue<Node*> q;
-    q.push(root);
-    cnt++;
-    // cout << root->val << " ";
-    while (!q.empty())
+    sort(arr.begin(), arr.end(), greater<int>());
+    for(int i = 0 ; i < arr.size(); i++)
     {
-        Node* parent = q.front();
-        q.pop();
-        if(parent->left)
-        {
-            q.push(parent->left);
-            // cout << parent->left->val << " ";
-            cnt++;
-        } 
-        if(parent->right)
-        {
-            q.push(parent->right);
-            // cout << parent->right->val << " ";
-            cnt++;
-        }
-
+        cout << arr[i] << " ";
     }
-    return cnt;
-    
+    // cout << endl;
 
 }
 
-int countNode(Node* root)
-{
-    if(root == NULL)
-        return 0;
-    int l = countNode(root->left);
-    int r = countNode(root->right);
-    return l + r + 1; 
-}
-int countLeafNode(Node* root)
-{
-    if(root == NULL)
-        return 0;
-    if(root->left == NULL && root->right == NULL) 
-        return 1;
-    int l = countLeafNode(root->left);
-    int r = countLeafNode(root->right);
-    return l + r ; 
-}
+vector<int> arr;
 void print_leafNodes(Node* root)
 {
     if(root == NULL)
         return ;
     if(root->left == NULL && root->right == NULL) 
     {
-        cout << root->val << " ";
+        arr.push_back(root->val);
         return ;
     }
     print_leafNodes(root->left);
@@ -143,16 +107,17 @@ void print_leafNodes(Node* root)
 }
 
 
+
 int main()
 {
     Node* root = inputBinaryTree();
-    // cout << "HEllo" << endl;  
-    // cout << root->left->val << " " ;
-    // cout << root->right->val << " " ;
-    levelOrderPrint(root);
-    // cout << countNode(root) << endl;
-    cout << countLeafNode(root) << endl;
-    // cout << root->left->left->left ;
+
     print_leafNodes(root);
+    sort(arr.begin(), arr.end(), greater<int>());
+    for(int i = 0 ; i < arr.size(); i++)
+    {
+        cout << arr[i] << " ";
+    }
+
     return 0;
 }

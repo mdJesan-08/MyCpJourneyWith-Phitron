@@ -80,79 +80,51 @@ void levelOrderPrint(Node* root)
 
 }
 
-int nodeCount(Node* root)
+
+
+void targetLevelPrint(Node* root, int targetLevel)
 {
-    int cnt = 0;
-    if(root == NULL) return 0;
-    queue<Node*> q;
-    q.push(root);
-    cnt++;
-    // cout << root->val << " ";
+    bool isMatched = false;
+    if(root == NULL) return;
+    queue< pair<Node* ,int> > q;
+    int curLevel = 0;
+    q.push({root, curLevel});
+    // if(targetLevel == 0) cout << root->val << " ";
+
     while (!q.empty())
     {
-        Node* parent = q.front();
+        pair<Node* ,int>  parent = q.front();
         q.pop();
-        if(parent->left)
+        if(targetLevel == parent.second)
         {
-            q.push(parent->left);
-            // cout << parent->left->val << " ";
-            cnt++;
+            cout << parent.first->val << " ";
+            isMatched = true;
         } 
-        if(parent->right)
+        if(parent.first->left)
         {
-            q.push(parent->right);
+            q.push({parent.first->left, parent.second +1});
+            // cout << parent.first->left->val << " ";
+        } 
+        if(parent.first->right)
+        {
+            q.push({parent.first->right, parent.second+1});
             // cout << parent->right->val << " ";
-            cnt++;
         }
 
     }
-    return cnt;
+    if(isMatched == false) cout << "Invalid";
+    cout << endl;
     
 
 }
 
-int countNode(Node* root)
-{
-    if(root == NULL)
-        return 0;
-    int l = countNode(root->left);
-    int r = countNode(root->right);
-    return l + r + 1; 
-}
-int countLeafNode(Node* root)
-{
-    if(root == NULL)
-        return 0;
-    if(root->left == NULL && root->right == NULL) 
-        return 1;
-    int l = countLeafNode(root->left);
-    int r = countLeafNode(root->right);
-    return l + r ; 
-}
-void print_leafNodes(Node* root)
-{
-    if(root == NULL)
-        return ;
-    if(root->left == NULL && root->right == NULL) 
-    {
-        cout << root->val << " ";
-        return ;
-    }
-    print_leafNodes(root->left);
-    print_leafNodes(root->right);    
-}
-
-
 int main()
 {
     Node* root = inputBinaryTree();
-    // cout << "HEllo" << endl;  
-    // cout << root->left->val << " " ;
-    // cout << root->right->val << " " ;
-    levelOrderPrint(root);
-    // cout << countNode(root) << endl;
-    cout << countLeafNode(root) << endl;
-    // cout << root->left->left->left ;
-    print_leafNodes(root);
+    int targetLevel;
+    cin >> targetLevel;
+    targetLevelPrint(root, targetLevel);
+
+
     return 0;
 }

@@ -80,6 +80,52 @@ void levelOrderPrint(Node* root)
 
 }
 
+int sumWithOutLeaf(Node* root)
+{
+    int sum = 0;
+    if(root->left == NULL && root->right == NULL) return sum;
+    queue<Node*> q;
+    q.push(root);
+    sum += root->val;
+    // cout << root->val << " ";
+    while (!q.empty())
+    {
+        Node* parent = q.front();
+        q.pop();
+        if(parent->left)
+        {
+            q.push(parent->left);
+            if(parent->left->left != NULL || parent->left->right != NULL) sum += parent->left->val;
+            // cout << parent->left->val << " ";
+        } 
+        if(parent->right)
+        {
+            q.push(parent->right);
+            // cout << parent->right->val << " ";
+            if(parent->right->left != NULL || parent->right->right != NULL) sum += parent->right->val;
+        }
+
+    }
+    // cout << endl;
+    return sum ;
+    
+
+}
+
+int withOutLeafSum(Node* root)
+{
+    if(root == NULL) 
+        return 0;
+    if(root->left == NULL && root->right == NULL)
+    {
+        return 0;
+    }
+    int l_sum = withOutLeafSum(root->left);
+    int r_sum = withOutLeafSum(root->right);
+
+    return l_sum + r_sum + root->val;
+}
+
 int nodeCount(Node* root)
 {
     int cnt = 0;
@@ -111,48 +157,30 @@ int nodeCount(Node* root)
 
 }
 
-int countNode(Node* root)
-{
-    if(root == NULL)
-        return 0;
-    int l = countNode(root->left);
-    int r = countNode(root->right);
-    return l + r + 1; 
-}
-int countLeafNode(Node* root)
-{
-    if(root == NULL)
-        return 0;
-    if(root->left == NULL && root->right == NULL) 
-        return 1;
-    int l = countLeafNode(root->left);
-    int r = countLeafNode(root->right);
-    return l + r ; 
-}
-void print_leafNodes(Node* root)
-{
-    if(root == NULL)
-        return ;
-    if(root->left == NULL && root->right == NULL) 
-    {
-        cout << root->val << " ";
-        return ;
-    }
-    print_leafNodes(root->left);
-    print_leafNodes(root->right);    
-}
 
+int maxDepth(Node* root)
+{
+    if(root == NULL) 
+        return 0;
+    if(root->left == NULL && root->right == NULL)
+    {
+        return 1;
+    }
+    int lDepth = maxDepth(root->left);
+    int rDepth = maxDepth(root->right);
+
+    return max(lDepth, rDepth) + 1;
+}
 
 int main()
 {
     Node* root = inputBinaryTree();
-    // cout << "HEllo" << endl;  
-    // cout << root->left->val << " " ;
-    // cout << root->right->val << " " ;
-    levelOrderPrint(root);
-    // cout << countNode(root) << endl;
-    cout << countLeafNode(root) << endl;
-    // cout << root->left->left->left ;
-    print_leafNodes(root);
+    // levelOrderPrint(root);
+    // cout << sumWithOutLeaf(root);
+    // cout << withOutLeafSum(root);
+    int maxiDepth = maxDepth(root) ;
+    int noOfNodes = nodeCount(root);
+
+    cout << ((pow(2,maxiDepth) -1 == noOfNodes)? "YES" : "NO") << endl;
     return 0;
 }
