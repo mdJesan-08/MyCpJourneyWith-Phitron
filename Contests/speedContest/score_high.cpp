@@ -2,21 +2,18 @@
 using namespace std;
 
 int main() {
-
+  
     int T;
     cin >> T;
-
     while(T--)
     {
         int N;
         cin >> N;
-        vector<int> arr[N];
-        for(int i = 0; i < arr.size(); i++)
-        {
-            cin 
-        }
-        
+
+        int A, B, C, D;
+        cin >> A >> B >> C >> D;
+        cout << max( max( max(A,B), C), D)  << endl;
+
     }
-    
     return 0;
 }
